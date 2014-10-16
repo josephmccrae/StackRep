@@ -8,10 +8,8 @@ $(document).ready( function() {
 	});
     
     $('.inspiration-getter').submit(function(event){
-		//zero out results if previous search has run
 		$('.results').html('');
-		// get the value of the tags the user submitted
-		var tags = $(this).find("input[name='answerers']").val();
+		var answerers = $(this).find("input[name='answerers']").val();
 		getInspiration(answerers);
 	});
 });

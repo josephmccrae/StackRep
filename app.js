@@ -45,6 +45,38 @@ var showQuestion = function(question) {
 };
 
 
+var showAnswerer = function(answerers) {
+	
+	// clone our result template code
+	var result = $('.templates .answerer').clone();
+	
+	// Set the question properties in result
+	var answererElem = result.find('.answerer-text a');
+	answererElem.attr('href', answerers.user.link);
+	answererElem.text(answerers.user.display_name);
+
+	var answererElemImage = result.find('.answerer-image img');
+	answererElemImage.attr('alt', answerers.user.display_name);
+	answererElemImage.attr('src', answerers.user.profile_image);
+
+    // pull reputation information
+	var reputation = result.find('#reputationNo');
+	reputation.html(answerers.user.reputation);
+    
+	// set the post count property in result
+	var asked = result.find('#post-count');
+	asked.html(answerers.post_count);
+
+	// set the #views for question property in result
+	var score = result.find('#scoreNo');
+	score.text(answerers.score);
+
+	return result;
+	console.log(result);
+};
+
+
+
 // this function takes the results object from StackOverflow
 // and creates info about search results to be appended to DOM
 var showSearchResults = function(query, resultNum) {

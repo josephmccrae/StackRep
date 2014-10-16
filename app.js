@@ -1,10 +1,18 @@
 $(document).ready( function() {
-	$('.unanswered-getter').submit( function(event){
+	$('.unanswered-getter').submit(function(event){
 		// zero out results if previous search has run
 		$('.results').html('');
 		// get the value of the tags the user submitted
 		var tags = $(this).find("input[name='tags']").val();
 		getUnanswered(tags);
+	});
+    
+    $('.inspiration-getter').submit(function(event){
+		//zero out results if previous search has run
+		$('.results').html('');
+		// get the value of the tags the user submitted
+		var tags = $(this).find("input[name='answerers']").val();
+		getInspiration(answerers);
 	});
 });
 
@@ -32,10 +40,7 @@ var showQuestion = function(question) {
 	// set some properties related to asker
 	var asker = result.find('.asker');
 	asker.html('<p>Name: <a target="_blank" href=http://stackoverflow.com/users/' + question.owner.user_id + ' >' +
-													question.owner.display_name +
-												'</a>' +
-							'</p>' +
- 							'<p>Reputation: ' + question.owner.reputation + '</p>'
+               question.owner.display_name + '</a>' + '</p>' + '<p>Reputation: ' + question.owner.reputation + '</p>'
 	);
 
 	return result;
@@ -86,6 +91,37 @@ var getUnanswered = function(tags) {
 		var errorElem = showError(error);
 		$('.search-results').append(errorElem);
 	});
+};
+
+
+var getInspiration = function(answerers) {
+
+    var tag = answerers;
+    var period = 'month';
+	var request = {site: 'stackoverflow'
+				   };
+
+	var result = $.ajax({
+		url: "http://api.stackexchange.com/2.2/tags/" + tag + "/top-answerers/" + period,
+		data: request,
+		dataType: "jsonp",
+		type: "GET",
+		})
+	.done(function(result){
+		var searchResults = showSearchResults(tag, result.items.length);
+
+		$('.search-results').html(searchResults);
+
+		$.each(result.items, function(i, item) {
+			var answerer = showAnswerer(item);
+			$('.results').append(answerer);
+		});
+	})
+	.fail(function(jqXHR, error, errorThrown){
+		var errorElem = showError(error);
+		$('.search-results').append(errorElem);
+	});
+
 };
 
 

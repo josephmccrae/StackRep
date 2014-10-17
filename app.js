@@ -44,13 +44,14 @@ var showQuestion = function(question) {
 	return result;
 };
 
-
+// this function takes the user object returned by StackOverflow 
+// and creates new result to be appended to DOM
 var showAnswerer = function(answerers) {
 	
 	// clone our result template code
 	var result = $('.templates .answerer').clone();
 	
-	// Set the question properties in result
+	// Set user id and profile image in result
 	var answererElem = result.find('.answerer-text a');
 	answererElem.attr('href', answerers.user.link);
 	answererElem.text(answerers.user.display_name);
@@ -59,15 +60,15 @@ var showAnswerer = function(answerers) {
 	answererElemImage.attr('alt', answerers.user.display_name);
 	answererElemImage.attr('src', answerers.user.profile_image);
 
-    // pull reputation information
+    // Set user reputation score in result
 	var reputation = result.find('#reputationNo');
 	reputation.html(answerers.user.reputation);
     
-	// set the post count property in result
+	// Set number of user posts in result
 	var asked = result.find('#post-count');
 	asked.html(answerers.post_count);
 
-	// set the #views for question property in result
+	// Set user score in result
 	var score = result.find('#scoreNo');
 	score.text(answerers.score);
 
@@ -138,7 +139,7 @@ var getInspiration = function(answerers) {
 		type: "GET",
 		})
 	.done(function(result){
-		var searchResults = showSearchResults(tag, result.items.length);
+		var searchResults = showSearchResults(result.items.length);
 
 		$('.search-results').html(searchResults);
 
